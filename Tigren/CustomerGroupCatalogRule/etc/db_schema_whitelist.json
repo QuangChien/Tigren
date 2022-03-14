@@ -21,7 +21,8 @@
             "hide_add_to_cart_status": true,
             "action_on_forbid": true,
             "cms_pages_url": true,
-            "store_views": true
+            "store_views": true,
+            "product_hide": true
         },
         "constraint": {
             "PRIMARY": true

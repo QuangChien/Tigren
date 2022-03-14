@@ -359,6 +359,34 @@
             </item>
         </argument>
 
+        <field name="product_hide">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Tigren\CustomerGroupCatalogRule\Model\Config\Source\ProductAll
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="additionalClasses" xsi:type="string">groupcat-categories-multiselect</item>
+                    <item name="label" xsi:type="string" translate="true">Select Product to Hide</item>
+                    <item name="componentType" xsi:type="string">field</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="component" xsi:type="string">Magento_Catalog/js/components/new-category</item>
+                    <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="showCheckbox" xsi:type="boolean">true</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">true</item>
+                    <item name="levelsVisibility" xsi:type="number">1</item>
+                    <item name="required" xsi:type="boolean">false</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="listens" xsi:type="array">
+                        <item name="${ $.namespace }.${ $.namespace }:responseData" xsi:type="string">setParsed</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
         <field name="hide_product_status">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

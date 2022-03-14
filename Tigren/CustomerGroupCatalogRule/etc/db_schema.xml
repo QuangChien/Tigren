@@ -22,6 +22,9 @@
         <column xsi:type="text" name="customer_group" nullable="false" comment="Customer Group"/>
         <column xsi:type="smallint" name="hide_category_status" identity="false" nullable="false" comment="Customer Group Catalog Rule Hide Category Status" default="0"/>
         <column xsi:type="text" name="category_hide" nullable="true" comment="Customer Group Catalog Rule Category Hide"/>
+
+        <column xsi:type="text" name="product_hide" nullable="true" comment="Customer Group Catalog Rule Product Hide"/>
+
         <column xsi:type="smallint" name="store_views" identity="false" nullable="false" comment="Customer Group Catalog Rule Store View"/>
 
         <column xsi:type="smallint" name="hide_product_status" identity="false" nullable="false" comment="Customer Group Catalog Rule Hide Product Status" default="0"/>

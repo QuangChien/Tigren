@@ -65,7 +65,8 @@ class Save extends Action
             'cms_pages_url' => $this->data['cms_pages'],
             'store_views' => $this->convertToString('store_views', 'store_views'),
             'customer_group' => $this->convertToString('customer_group'),
-            'category_hide' => $this->convertToString('category_hide')
+            'category_hide' => $this->convertToString('category_hide'),
+            'product_hide' => $this->convertToString('product_hide')
         ];
         return $data;
     }
