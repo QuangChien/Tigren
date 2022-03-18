@@ -82,13 +82,13 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                 $fullData = array_merge($fullData, $arrStoreViews);
             }
 
-            if(!empty($rule->getProductHide())) {
-                $arrCategoryHide = explode("/",$rule->getProductHide());
-                foreach ($arrCategoryHide as $key => $arrCategoryHideItem){
-                    $arrCategoryHide['product_hide'][$key] = $arrCategoryHideItem;
+            if(!empty($rule->getProductSelect())) {
+                $arrProductSelect = explode("/",$rule->getProductSelect());
+                foreach ($arrProductSelect as $key => $arrProductSelectItem){
+                    $arrProductSelect['product_select'][$key] = $arrProductSelectItem;
                 }
 
-                $fullData = array_merge($fullData, $arrCategoryHide);
+                $fullData = array_merge($fullData, $arrProductSelect);
             }
 
             $this->_loadedData[$rule->getId()] = $fullData;

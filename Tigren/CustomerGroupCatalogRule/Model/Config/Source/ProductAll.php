@@ -32,7 +32,7 @@ class ProductAll implements \Magento\Framework\Option\ArrayInterface
             $this->options = [['label' => __('Please select'), 'value' => '']];
             $collection = $this->_productCollectionFactory->create();
             $collection->addAttributeToSelect(['name', 'sku']);
-            $collection->setPageSize(3); // fetching only 3 products
+//            $collection->setPageSize(3); // fetching only 3 products
             foreach ($collection as $item) {
                 $this->options[] = [
                     'label' => $item->getData('name'),

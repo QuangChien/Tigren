@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author  Tigren Solutions <info@tigren.com>
+  ~ @copyright Copyright (c) 2022 Tigren Solutions <https://www.tigren.com>. All rights reserved.
+  ~ @license  Open Software License (“OSL”) v. 3.0
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="hide_button" type="Tigren\CustomerGroupCatalogRule\Plugin\Catalog\HideButton" sortOrder="10" disabled="false"  />
+    </type>
+<!--    <type name="Magento\Catalog\Pricing\Render">-->
+<!--        <plugin name="hide_price" type="Tigren\CustomerGroupCatalogRule\Plugin\Catalog\HidePrice" sortOrder="20" disabled="false"  />-->
+<!--    </type>-->
+
+<!--    <type name="Magento\Catalog\Pricing\Render\FinalPriceBox">-->
+<!--        <plugin name="cataloghideprice_finalpricebox" type="Tigren\CustomerGroupCatalogRule\Plugin\Catalog\FinalPriceBox"/>-->
+<!--    </type>-->
+</config>

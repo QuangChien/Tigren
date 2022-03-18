@@ -22,7 +22,8 @@
             "action_on_forbid": true,
             "cms_pages_url": true,
             "store_views": true,
-            "product_hide": true
+            "product_hide": true,
+            "product_select": true
         },
         "constraint": {
             "PRIMARY": true

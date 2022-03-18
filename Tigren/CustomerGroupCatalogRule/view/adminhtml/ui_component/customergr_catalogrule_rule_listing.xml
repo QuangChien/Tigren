@@ -27,7 +27,7 @@
                 <item name="sticky" xsi:type="boolean">true</item>
             </item>
         </argument>
-        <filterSearch name="fulltext"/>
+<!--        <filterSearch name="fulltext"/>-->
         <bookmark name="bookmarks"/>
         <columnsControls name="columns_controls"/>
         <filters name="listing_filters"/>
@@ -110,7 +110,7 @@
             </argument>
         </column>
 
-        <column name="store_views" class="Tigren\CustomerGroupCatalogRule\Ui\Component\Listing\Column\Store" sortOrder="20">
+        <column name="store_views" class="Tigren\CustomerGroupCatalogRule\Ui\Component\Listing\Columns\Store" sortOrder="20">
             <settings>
                 <label translate="true">Stores</label>
                 <bodyTmpl>ui/grid/cells/html</bodyTmpl>

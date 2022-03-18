@@ -1,0 +1,22 @@
+<?php
+/**
+ * @author  Tigren Solutions <info@tigren.com>
+ * @copyright Copyright (c) 2022 Tigren Solutions <https://www.tigren.com>. All rights reserved.
+ * @license  Open Software License (“OSL”) v. 3.0
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View\Addto\Compare */
+?>
+
+<?php
+if (!$block->isHideAddToCompare()) :?>
+    <?php $viewModel = $block->getData('addToCompareViewModel'); ?>
+    <?php if ($viewModel->isAvailableForCompare($block->getProduct())) : ?>
+        <a href="#" data-post='<?= /* @noEscape */
+        $block->getPostDataParams() ?>'
+           data-role="add-to-links"
+           class="action tocompare"><span><?= $block->escapeHtml(__('Add to Compare')) ?></span></a>
+    <?php endif; ?>
+<?php endif; ?>
+
+
