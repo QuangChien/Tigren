@@ -34,8 +34,20 @@ class OptionProductRule implements \Magento\Framework\Event\ObserverInterface
      */
     protected $_urlInterface;
 
+    /**
+     * @var \Magento\Framework\App\Response\Http
+     */
     protected $response;
 
+
+    /**
+     * @param \Tigren\CustomerGroupCatalogRule\Helper\GetRuleCatalog $getRuleCatalog
+     * @param \Magento\Cms\Api\PageRepositoryInterface $pageRepositoryInterface
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Framework\UrlInterface $urlInterface
+     * @param \Magento\Framework\App\Response\Http $response
+     */
     public function __construct
     (
         \Tigren\CustomerGroupCatalogRule\Helper\GetRuleCatalog $getRuleCatalog,
@@ -95,6 +107,10 @@ class OptionProductRule implements \Magento\Framework\Event\ObserverInterface
         return '';
     }
 
+
+    /**
+     * @return \Magento\Framework\Api\SearchCriteria
+     */
     protected function _getSearchCriteria()
     {
         return $this->_search->addFilter('is_active', '1')->create();
@@ -114,6 +130,12 @@ class OptionProductRule implements \Magento\Framework\Event\ObserverInterface
         return '';
     }
 
+    /**
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $product = $observer->getProduct();
@@ -122,7 +144,7 @@ class OptionProductRule implements \Magento\Framework\Event\ObserverInterface
         $directLinkStatus = $this->ruleHelper->isHide('direct_link_status');
         $actionOnForbidStatus = $this->ruleHelper->isHide('action_on_forbid');
         $hideProductStatus = $this->ruleHelper->isHide('hide_product_status');
-        $cmsPageUrl = $this->ruleHelper->getRule()->getData('cms_pages_url');
+        $cmsPageUrl = $this->ruleHelper->getCmsPage();
 
         if(in_array($productSku, $productInRule)){
             if($hideProductStatus){
@@ -134,7 +156,6 @@ class OptionProductRule implements \Magento\Framework\Event\ObserverInterface
                     }
                 }
             }
-
         }
     }
 }

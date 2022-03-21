@@ -7,61 +7,83 @@
 
 namespace Tigren\CustomerGroupCatalogRule\Helper;
 
-class GetRuleCatalog extends \Magento\Framework\App\Helper\AbstractHelper
+use Magento\Customer\Model\Session;
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\DataObject;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Tigren\CustomerGroupCatalogRule\Model\ResourceModel\Rule\CollectionFactory;
+
+class GetRuleCatalog extends AbstractHelper
 {
     /**
-     * @var \Tigren\CustomerGroupCatalogRule\Model\ResourceModel\Rule\CollectionFactory
+     * @var CollectionFactory
      */
     protected $_ruleCollection;
 
     /**
-     * @var \Magento\Customer\Model\Session
+     * @var Session
      */
     protected $_customerSession;
 
     /**
-     * @var \Magento\Framework\Stdlib\DateTime\DateTime
+     * @var DateTime
      */
     protected $date;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     protected $storeManager;
 
-//    /**
-//     * @var \Magento\Store\Model\ScopeInterface
-//     */
-//    protected $_scopeConfig;
+    /**
+     * @var ScopeInterface
+     */
+    protected $_scopeConfig;
 
+    /**
+     * @param Context $context
+     * @param CollectionFactory $ruleCollection
+     * @param Session $customerSession
+     * @param DateTime $date
+     * @param StoreManagerInterface $storeManager
+     */
     public function __construct(
-        \Magento\Framework\App\Helper\Context                                       $context,
-        \Tigren\CustomerGroupCatalogRule\Model\ResourceModel\Rule\CollectionFactory $ruleCollection,
-        \Magento\Customer\Model\Session                                             $customerSession,
-        \Magento\Framework\Stdlib\DateTime\DateTime                                 $date,
-        \Magento\Store\Model\StoreManagerInterface                                  $storeManager
-//        \Magento\Store\Model\ScopeInterface $scopeInterface
+        Context               $context,
+        CollectionFactory     $ruleCollection,
+        Session               $customerSession,
+        DateTime              $date,
+        StoreManagerInterface $storeManager,
+        ScopeConfigInterface  $scopeConfig
     )
     {
         $this->_ruleCollection = $ruleCollection;
         $this->_customerSession = $customerSession;
         $this->date = $date;
         $this->storeManager = $storeManager;
-//        $this->_scopeConfig = $scopeInterface;
+        $this->_scopeConfig = $scopeConfig;
         parent::__construct($context);
     }
 
     /**
      * @return mixed
      */
-    public function isEnableModule()
+    public function isModuleEnable()
     {
-        return $this->scopeConfig->getValue('custom/general/enable', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue('custom/general/enable',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
+    /**
+     * @param $field
+     * @return bool
+     */
     public function isHide($field)
     {
-        if ($this->getRule() !== null) {
+        if (!is_null($this->getRule())) {
             $hideField = $this->getRule()->getData($field);
             if ($hideField == 1) {
                 return true;
@@ -81,11 +103,12 @@ class GetRuleCatalog extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return \Magento\Framework\DataObject
+     * @return DataObject|null
+     * @throws NoSuchEntityException
      */
-    public function getRules()
+    public function getRule()
     {
-        $rules = $this->_ruleCollection->create()
+        $rule = $this->_ruleCollection->create()
             ->addFieldToFilter('status', 1)
             ->addFieldToFilter('time_rule_start', array(
                 array('lteq' => $this->getDateCurrent()),
@@ -107,13 +130,23 @@ class GetRuleCatalog extends \Magento\Framework\App\Helper\AbstractHelper
                 array('like' => $this->getStoreId() . '/%'),
                 array('like' => $this->getStoreId()),
                 array('like' => 0)
-            ));
-        return $rules;
+            ))
+            ->setOrder('priority', 'DESC')->load()
+            ->getFirstItem();
+        if (!$rule->isEmpty()) {
+            if ($this->isModuleEnable()) {
+                return $rule;
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
     }
 
     /**
      * @return int
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getStoreId()
     {
@@ -121,17 +154,18 @@ class GetRuleCatalog extends \Magento\Framework\App\Helper\AbstractHelper
         return $storeId;
     }
 
+
     /**
-     * @return null|object
+     * @return int|mixed|null
      */
-    public function getRule()
+    public function getCmsPage()
     {
-        if (!empty($this->getRules())) {
-            $rule = $this->getRules()->setOrder('priority', 'DESC')->load()->getFirstItem();
-            return $rule;
+        if (!is_null($this->getRule())) {
+            $cmsPage = $this->getRule()->getData('cms_pages_url');
+            return $cmsPage;
         }
-        return null;
-    }
+        return 0;
+}
 
 
     /**
@@ -140,25 +174,11 @@ class GetRuleCatalog extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getEntityInRule($field)
     {
-        if ($this->getRule() !== null) {
+        if (!is_null($this->getRule())) {
             $entityValue = explode('/', $this->getRule()->getData($field));
             return $entityValue;
         }
         return [];
-    }
-
-    /**
-     * @return bool
-     */
-    public function checkRuleInStore()
-    {
-        if ($this->getRule() !== null) {
-            $storeViews = explode('/', $this->getRule()->getData('store_views'));
-            if (in_array($this->getStoreId(), $storeViews) || $this->getRule()->getData('store_views') == 0) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

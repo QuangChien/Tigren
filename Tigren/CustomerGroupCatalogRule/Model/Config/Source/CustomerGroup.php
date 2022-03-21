@@ -8,14 +8,23 @@
 namespace Tigren\CustomerGroupCatalogRule\Model\Config\Source;
 
 /**
- * Authors list
- *
+ * Customer list
  */
 class CustomerGroup implements \Magento\Framework\Option\ArrayInterface
 {
+    /**
+     * @var \Magento\Customer\Model\ResourceModel\Group\Collection
+     */
     protected $customerGroup;
+
+    /**
+     * @var
+     */
     protected $options;
 
+    /**
+     * @param \Magento\Customer\Model\ResourceModel\Group\Collection $customerGroup
+     */
     public function __construct(
         \Magento\Customer\Model\ResourceModel\Group\Collection $customerGroup
     )
@@ -42,5 +51,4 @@ class CustomerGroup implements \Magento\Framework\Option\ArrayInterface
 
         return $this->options;
     }
-
 }

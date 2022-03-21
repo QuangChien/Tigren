@@ -14,6 +14,14 @@ use Magento\Store\Model\System\Store as SystemStore;
 
 class Store extends \Magento\Store\Ui\Component\Listing\Column\Store
 {
+    /**
+     * @param ContextInterface $context
+     * @param UiComponentFactory $uiComponentFactory
+     * @param SystemStore $systemStore
+     * @param Escaper $escaper
+     * @param array $components
+     * @param array $data
+     */
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
@@ -25,6 +33,10 @@ class Store extends \Magento\Store\Ui\Component\Listing\Column\Store
         parent::__construct($context, $uiComponentFactory, $systemStore, $escaper, $components, $data, 'store_views');
     }
 
+    /**
+     * @param array $item
+     * @return \Magento\Framework\Phrase|string
+     */
     protected function prepareItem(array $item)
     {
         $content = $origStores = '';
@@ -54,6 +66,11 @@ class Store extends \Magento\Store\Ui\Component\Listing\Column\Store
         return $content;
     }
 
+
+    /**
+     * @param array $dataSource
+     * @return array
+     */
     public function prepareDataSource(array $dataSource)
     {
         if (isset($dataSource['data']['items'])) {

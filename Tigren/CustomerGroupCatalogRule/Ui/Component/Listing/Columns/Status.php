@@ -17,8 +17,19 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class Status extends \Magento\Ui\Component\Listing\Columns\Column
 {
+    /**
+     * @var StoreManagerInterface
+     */
     protected $storeManager;
 
+
+    /**
+     * @param ContextInterface $context
+     * @param UiComponentFactory $uiComponentFactory
+     * @param StoreManagerInterface $storeManager
+     * @param array $components
+     * @param array $data
+     */
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,

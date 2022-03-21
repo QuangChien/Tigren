@@ -13,10 +13,21 @@ use Magento\Backend\App\Action;
 
 class Save extends Action
 {
+    /**
+     * @var RuleFactory
+     */
     protected $_rule;
-    protected $data;
-//    protected $_collectionFactory;
 
+    /**
+     * data submit form
+     * @var array
+     */
+    protected $data = [];
+
+    /**
+     * @param Action\Context $context
+     * @param RuleFactory $ruleFactory
+     */
     public function __construct(
         Action\Context $context,
         RuleFactory $ruleFactory
@@ -24,13 +35,11 @@ class Save extends Action
     {
         parent::__construct($context);
         $this->_rule = $ruleFactory;
-//        $this->_collectionFactory = $collectionFactory;
         $this->data = $this->getRequest()->getPostValue();
-//        echo "<pre>";
-//        print_r($this->data);die();
     }
 
     /**
+     * check has id
      * @return bool
      */
     public function hasId()
@@ -60,13 +69,13 @@ class Save extends Action
             'date_range_status' => $this->data['date_range_status'],
             'hide_category_status' => $this->data['hide_category_status'],
             'hide_product_status' => $this->data['hide_product_status'],
-            'hide_product_price_status' => $this->checkHideProduct() ? 0 : $this->data['hide_product_price_status'],
-            'hide_add_to_cart_status' => $this->checkHidePrice() ? 1 : $this->data['hide_add_to_cart_status'],
-            'hide_add_to_wishlist_status' => $this->checkHideProduct() ? 0 : $this->data['hide_add_to_wishlist_status'],
-            'hide_add_to_compare_status' => $this->checkHideProduct() ? 0 : $this->data['hide_add_to_compare_status'],
+            'hide_product_price_status' => $this->checkHideStatus('hide_product_status') ? 0 : $this->data['hide_product_price_status'],
+            'hide_add_to_cart_status' => $this->checkHideStatus('hide_product_price_status') ? 1 : $this->data['hide_add_to_cart_status'],
+            'hide_add_to_wishlist_status' => $this->checkHideStatus('hide_product_status') ? 0 : $this->data['hide_add_to_wishlist_status'],
+            'hide_add_to_compare_status' => $this->checkHideStatus('hide_product_status') ? 0 : $this->data['hide_add_to_compare_status'],
             'direct_link_status' => $this->data['direct_link_status'],
-            'time_rule_start' => $this->checkDateRange() ? $this->data['time_rule_start'] : null,
-            'time_rule_end' => $this->checkDateRange() ? $this->data['time_rule_end'] : null,
+            'time_rule_start' => $this->checkHideStatus('date_range_status') ? $this->data['time_rule_start'] : null,
+            'time_rule_end' => $this->checkHideStatus('date_range_status') ? $this->data['time_rule_end'] : null,
             'action_on_forbid' => $this->data['action_on_forbid'],
             'cms_pages_url' => $this->data['cms_pages_url'],
             'store_views' => $this->convertToString('store_views', 'store_views'),
@@ -80,28 +89,9 @@ class Save extends Action
     /**
      * @return bool
      */
-    public function checkHidePrice()
+    public function checkHideStatus($field)
     {
-        if($this->data['hide_product_price_status'] == 1){
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function checkHideProduct()
-    {
-        if($this->data['hide_product_status'] == 1){
-            return true;
-        }
-        return false;
-    }
-
-    public function checkDateRange()
-    {
-        if($this->data['date_range_status'] == 1){
+        if($this->data[$field] == 1){
             return true;
         }
         return false;
@@ -148,8 +138,6 @@ class Save extends Action
      */
     public function execute()
     {
-//        echo "<pre>";
-//        print_r($this->dataRule()); die();
         $rule = $this->_rule->create();
         if ($this->hasId()) {
             $rule->load($this->getId());
@@ -162,8 +150,20 @@ class Save extends Action
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage(__($e->getMessage()));
         }
+        if ($this->getRequest()->getParam('back')) {
+            return $this->redirectToEdit($rule);
+        }
 
         return $this->redirectToIndex();
+    }
+
+    /**
+     * @param $model
+     * @return \Magento\Framework\Controller\Result\Redirect
+     */
+    public function redirectToEdit($model)
+    {
+        return $this->resultRedirectFactory->create()->setPath('*/*/edit', ['id' => $model->getId(), '_current' => true]);
     }
 
     /**
@@ -183,6 +183,6 @@ class Save extends Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Magento_Customer::customer_group_rule');
+        return $this->_authorization->isAllowed('Tigren_CustomerGroupCatalogRule::customer_group_catalog');
     }
 }

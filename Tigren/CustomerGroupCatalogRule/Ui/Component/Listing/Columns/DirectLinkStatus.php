@@ -13,8 +13,19 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class DirectLinkStatus extends \Magento\Ui\Component\Listing\Columns\Column
 {
+    /**
+     * @var StoreManagerInterface
+     */
     protected $storeManager;
 
+
+    /**
+     * @param ContextInterface $context
+     * @param UiComponentFactory $uiComponentFactory
+     * @param StoreManagerInterface $storeManager
+     * @param array $components
+     * @param array $data
+     */
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
@@ -26,6 +37,10 @@ class DirectLinkStatus extends \Magento\Ui\Component\Listing\Columns\Column
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
+    /**
+     * @param array $dataSource
+     * @return array
+     */
     public function prepareDataSource(array $dataSource)
     {
         if(isset($dataSource['data']['items'])) {

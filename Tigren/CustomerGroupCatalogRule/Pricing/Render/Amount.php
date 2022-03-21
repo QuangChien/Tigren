@@ -7,10 +7,11 @@
 namespace Tigren\CustomerGroupCatalogRule\Pricing\Render;
 
 use Magento\Framework\Pricing\Amount\AmountInterface;
-use Magento\Framework\Pricing\SaleableInterface;
 use Magento\Framework\Pricing\Price\PriceInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\Pricing\SaleableInterface;
 use Magento\Framework\View\Element\Template;
+use Tigren\CustomerGroupCatalogRule\Pricing\RendererPool;
 
 /**
  * Price amount renderer
@@ -106,30 +107,6 @@ class Amount extends Template implements \Magento\Framework\Pricing\Render\Amoun
     }
 
     /**
-     * @return Product
-     */
-//    private function getProduct()
-//    {
-//        if (is_null($this->product)) {
-//            $this->product = $this->registry->registry('product');
-//
-//            if (!$this->product->getId()) {
-//                throw new LocalizedException(__('Failed to initialize product'));
-//            }
-//        }
-//
-//        return $this->product;
-//    }
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getProductSku()
-//    {
-//        return $this->getProduct()->getSku();
-//    }
-
-    /**
      * @return bool
      */
     public function isHideProduct()
@@ -152,29 +129,6 @@ class Amount extends Template implements \Magento\Framework\Pricing\Render\Amoun
     {
         return $this->ruleHelper->getEntityInRule('product_select');
     }
-
-//    public function getRuleId()
-//    {
-//        return $this->ruleHelper->getRule()->getData();
-//    }
-
-    /**
-     * @return string
-     */
-//    public function statusPrice()
-//    {
-//        var_dump(in_array($this->getProductSku(), $this->getProductInRule()));
-//        if(in_array($this->getProductSku(), $this->getProductInRule())){
-//            if($this->isHideProduct() == false){
-//                if($this->isHidePrice()){
-//                    return "display_none";
-//                }
-//                return "d";
-//            }
-//            return "d";
-//        }
-//        return "d";
-//    }
 
     /**
      * @param float $value
@@ -327,37 +281,3 @@ class Amount extends Template implements \Magento\Framework\Pricing\Render\Amoun
         return $this;
     }
 }
-
-//<?php
-///**
-// * @author  Tigren Solutions <info@tigren.com>
-// * @copyright Copyright (c) 2022 Tigren Solutions <https://www.tigren.com>. All rights reserved.
-// * @license  Open Software License (“OSL”) v. 3.0
-// */
-//
-//namespace Tigren\CustomerGroupCatalogRule\Pricing\Render;
-//
-//use Magento\Framework\Pricing\Render\Amount as AmountCore;
-//
-///**
-// * @api
-// * @since 100.0.2
-// */
-//class Amount extends AmountCore
-//{
-//    public function __construct(
-//        \Magento\Framework\View\Element\Template\Context $context,
-//        \Magento\Framework\Pricing\Render\AmountInterface $amount,
-//        PriceCurrencyInterface $priceCurrency,
-//        RendererPool $rendererPool,
-//        SaleableInterface $saleableItem = null,
-//        PriceInterface $price = null,
-//    ) {
-//        parent::__construct($context, $amount, $saleableItem, $price, $priceCurrency, $rendererPool);
-//    }
-//
-//    public function test()
-//    {
-//        return "test";
-//    }
-//}

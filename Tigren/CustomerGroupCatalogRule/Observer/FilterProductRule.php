@@ -14,6 +14,10 @@ class FilterProductRule implements \Magento\Framework\Event\ObserverInterface
      */
     protected $ruleHelper;
 
+
+    /**
+     * @param \Tigren\CustomerGroupCatalogRule\Helper\GetRuleCatalog $getRuleCatalog
+     */
     public function __construct
     (
         \Tigren\CustomerGroupCatalogRule\Helper\GetRuleCatalog $getRuleCatalog
@@ -24,33 +28,10 @@ class FilterProductRule implements \Magento\Framework\Event\ObserverInterface
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-//        echo "<pre>";
-//        var_dump($this->ruleHelper->isEnableModule());die();
         $collection = $observer->getData('collection');
         $hideProductStatus = $this->ruleHelper->isHide('hide_product_status');
-        $checkRuleInStore = $this->ruleHelper->checkRuleInStore();
-        if($hideProductStatus && $checkRuleInStore){
+        if ($hideProductStatus) {
             $collection->addAttributeToFilter('sku', array('nin' => $this->ruleHelper->getEntityInRule('product_select')));
         }
-//                echo "<pre>";
-//        print_r($this->getRule()->getData());die();
-//        $this->getProductInRule();
-//        echo "<pre>";
-//        var_dump($this->getProductInRule()); die();
-
-//        var_dump($this->getRules()->getData()); die();
-//        echo "<pre>";
-//        print_r($collection->getData());die();
-
-
-//        echo "<pre>";
-//        print_r($collection->getData());
-//        die();
-////        $categories = $observer->getData('menu');
-////        die();
-//        $writer = new \Laminas\Log\Writer\Stream(BP . '/var/log/custom.log');
-//        $logger = new \Laminas\Log\Logger();
-//        $logger->addWriter($writer);
-//        $logger->info('Hello');
     }
 }

@@ -12,9 +12,23 @@ use Tigren\CustomerGroupCatalogRule\Model\ResourceModel\Rule\CollectionFactory;
 
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
+
     protected $_loadedData;
+
+    /**
+     * @var \Tigren\CustomerGroupCatalogRule\Model\ResourceModel\Rule\Collection
+     */
     protected $collection;
 
+
+    /**
+     * @param $name
+     * @param $primaryFieldName
+     * @param $requestFieldName
+     * @param CollectionFactory $collectionFactory
+     * @param array $meta
+     * @param array $data
+     */
     public function __construct(
         $name,
         $primaryFieldName,
@@ -26,18 +40,6 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     {
         $this->collection = $collectionFactory->create();
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-    }
-
-    public function covertToArray($field, $ruleItem, $data)
-    {
-        if(!empty($ruleItem->getData($field))) {
-            $arrField = explode("/",$ruleItem->getData($field));
-            foreach ($arrField as $key => $arrFieldItem){
-                $arrField[$field][$key] = $arrFieldItem;
-            }
-
-            $data = array_merge($data, $arrField);
-        }
     }
 
     /**
@@ -93,8 +95,6 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 
             $this->_loadedData[$rule->getId()] = $fullData;
         }
-//        echo "<pre>";
-//        print_r($this->_loadedData); die();
         return $this->_loadedData;
 
     }

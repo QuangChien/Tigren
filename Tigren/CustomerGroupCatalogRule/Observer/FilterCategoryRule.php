@@ -10,8 +10,15 @@ namespace Tigren\CustomerGroupCatalogRule\Observer;
 
 class FilterCategoryRule implements \Magento\Framework\Event\ObserverInterface
 {
+    /**
+     * @var \Tigren\CustomerGroupCatalogRule\Helper\GetRuleCatalog
+     */
     protected $ruleHelper;
 
+
+    /**
+     * @param \Tigren\CustomerGroupCatalogRule\Helper\GetRuleCatalog $getRuleCatalog
+     */
     public function __construct
     (
         \Tigren\CustomerGroupCatalogRule\Helper\GetRuleCatalog $getRuleCatalog
@@ -20,13 +27,13 @@ class FilterCategoryRule implements \Magento\Framework\Event\ObserverInterface
         $this->ruleHelper = $getRuleCatalog;
     }
 
+    /**
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return void
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-//        echo "<pre>";
-//        print_r($this->ruleHelper->getRule()->getData());die();
         $collection = $observer->getData('category_collection');
-        if ($this->ruleHelper->checkRuleInStore()) {
-            $collection->addFieldToFilter('entity_id', array('nin' => $this->ruleHelper->getEntityInRule('category_hide')));
-        }
+        $collection->addFieldToFilter('entity_id', array('nin' => $this->ruleHelper->getEntityInRule('category_hide')));
     }
 }

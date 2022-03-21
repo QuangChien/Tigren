@@ -8,6 +8,7 @@
 namespace Tigren\CustomerGroupCatalogRule\Controller\Adminhtml\Rule;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\Model\View\Result\Redirect;
 use Tigren\CustomerGroupCatalogRule\Model\ResourceModel\Rule\CollectionFactory;
 use Tigren\CustomerGroupCatalogRule\Model\RuleFactory;
 use Magento\Ui\Component\MassAction\Filter;
@@ -15,12 +16,36 @@ use Magento\Backend\Model\View\Result\RedirectFactory;
 
 class Delete extends Action
 {
+    /**
+     * @var RuleFactory
+     */
     private $_rule;
+
+    /**
+     * @var Filter
+     */
     private $_filter;
+
+    /**
+     * @var CollectionFactory
+     */
     private $_collection;
+
+    /**
+     * @var RedirectFactory
+     */
     private $_resultRedirect;
 
-    public function __construct(
+
+    /**
+     * @param Action\Context $context
+     * @param RuleFactory $ruleFactory
+     * @param Filter $filter
+     * @param CollectionFactory $collectionFactory
+     * @param RedirectFactory $redirectFactory
+     */
+    public function __construct
+    (
         Action\Context    $context,
         RuleFactory       $ruleFactory,
         Filter            $filter,
@@ -35,6 +60,10 @@ class Delete extends Action
         $this->_resultRedirect = $redirectFactory;
     }
 
+    /**
+     * @return Redirect
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function execute()
     {
         $collection = $this->_filter->getCollection($this->_collectionFactory->create());
@@ -71,7 +100,7 @@ class Delete extends Action
 
     /**
      * Redirect to Rule list
-     * @return \Magento\Backend\Model\View\Result\Redirect
+     * @return Redirect
      */
     public function redirectToIndex()
     {
@@ -85,6 +114,6 @@ class Delete extends Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Magento_Customer::customer_group_rule');
+        return $this->_authorization->isAllowed('Tigren_CustomerGroupCatalogRule::customer_group_catalog');
     }
 }

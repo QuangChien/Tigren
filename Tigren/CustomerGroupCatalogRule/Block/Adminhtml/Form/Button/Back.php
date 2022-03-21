@@ -24,6 +24,9 @@ class Back extends Generic implements ButtonProviderInterface
         ];
     }
 
+    /**
+     * @return string
+     */
     public function getBackUrl()
     {
         return $this->getUrl('*/*/');

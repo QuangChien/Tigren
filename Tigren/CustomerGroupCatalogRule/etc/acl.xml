@@ -8,7 +8,7 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Customer::customer" title="Customers" translate="title" sortOrder="40">
-                    <resource id="Magento_Customer::customer_group_rule" title="Customer Group Catalog Rules" translate="title" sortOrder="40" />
+                    <resource id="Tigren_CustomerGroupCatalogRule::customer_group_catalog" title="Customer Group Catalog Rules" translate="title" sortOrder="40" />
                 </resource>
             </resource>
         </resources>

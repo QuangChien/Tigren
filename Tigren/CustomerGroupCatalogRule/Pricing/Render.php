@@ -117,9 +117,22 @@ class Render extends Template
      */
     protected function _toHtml()
     {
-//        echo "<pre>";
-//        var_dump(!in_array($this->getProductSku(), $this->getProductInRule()));
-        if($this->isHidePrice() == false){
+        if(in_array($this->getProductSku(), $this->getProductInRule())){
+            if($this->isHidePrice() == false){
+                /** @var PricingRender $priceRender */
+                $priceRender = $this->getLayout()->getBlock($this->getPriceRender());
+                if ($priceRender instanceof PricingRender) {
+                    $product = $this->getProduct();
+                    if ($product instanceof SaleableInterface) {
+                        $arguments = $this->getData();
+                        $arguments['render_block'] = $this;
+                        return $priceRender->render($this->getPriceTypeCode(), $product, $arguments);
+                    }
+                }else{
+                    return parent::_toHtml();
+                }
+            }
+        }else{
             /** @var PricingRender $priceRender */
             $priceRender = $this->getLayout()->getBlock($this->getPriceRender());
             if ($priceRender instanceof PricingRender) {
@@ -131,6 +144,7 @@ class Render extends Template
                 }
             }
         }
+
         return parent::_toHtml();
     }
 

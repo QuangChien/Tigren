@@ -37,7 +37,7 @@ class Index extends Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Magento_Customer::customer_group_rule');
+        return $this->_authorization->isAllowed('Tigren_CustomerGroupCatalogRule::customer_group_catalog');
     }
 
     /**

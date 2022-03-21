@@ -8,12 +8,15 @@
 namespace Tigren\CustomerGroupCatalogRule\Model\Config\Source;
 
 /**
- * Authors list
- *
+ * Product All
  */
 class ProductAll implements \Magento\Framework\Option\ArrayInterface
 {
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
+     */
     protected $_productCollectionFactory;
+
     protected $options;
 
     public function __construct(

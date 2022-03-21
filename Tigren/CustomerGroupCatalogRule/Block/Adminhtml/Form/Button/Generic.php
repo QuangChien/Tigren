@@ -12,7 +12,14 @@ use Magento\Cms\Api\PageRepositoryInterface;
 
 class Generic
 {
+    /**
+     * @var Context
+     */
     protected $context;
+
+    /**
+     * @var PageRepositoryInterface
+     */
     protected $pageRepository;
 
     /**

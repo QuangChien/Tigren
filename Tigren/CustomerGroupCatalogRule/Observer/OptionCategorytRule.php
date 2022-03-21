@@ -34,8 +34,20 @@ class OptionCategorytRule implements \Magento\Framework\Event\ObserverInterface
      */
     protected $_urlInterface;
 
+    /**
+     * @var \Magento\Framework\App\Response\Http
+     */
     protected $response;
 
+
+    /**
+     * @param \Tigren\CustomerGroupCatalogRule\Helper\GetRuleCatalog $getRuleCatalog
+     * @param \Magento\Cms\Api\PageRepositoryInterface $pageRepositoryInterface
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Framework\UrlInterface $urlInterface
+     * @param \Magento\Framework\App\Response\Http $response
+     */
     public function __construct
     (
         \Tigren\CustomerGroupCatalogRule\Helper\GetRuleCatalog $getRuleCatalog,
@@ -94,6 +106,9 @@ class OptionCategorytRule implements \Magento\Framework\Event\ObserverInterface
         return '';
     }
 
+    /**
+     * @return \Magento\Framework\Api\SearchCriteria
+     */
     protected function _getSearchCriteria()
     {
         return $this->_search->addFilter('is_active', '1')->create();
@@ -113,6 +128,12 @@ class OptionCategorytRule implements \Magento\Framework\Event\ObserverInterface
         return '';
     }
 
+    /**
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $request = $observer->getRequest();
@@ -122,7 +143,7 @@ class OptionCategorytRule implements \Magento\Framework\Event\ObserverInterface
 
         $actionOnForbidStatus = $this->ruleHelper->isHide('action_on_forbid');
         $hideCategoryStatus = $this->ruleHelper->isHide('hide_category_status');
-        $cmsPageUrl = $this->ruleHelper->getRule()->getData('cms_pages_url');
+        $cmsPageUrl = $this->ruleHelper->getCmsPage();
         $hideCategoryStatus = $this->ruleHelper->isHide('hide_category_status');
 
         if(in_array($id, $categoryInRule)){
@@ -136,25 +157,5 @@ class OptionCategorytRule implements \Magento\Framework\Event\ObserverInterface
                 }
             }
         }
-//                echo "<pre>";
-//        print_r($this->getRule()->getData());die();
-//        $this->getProductInRule();
-//        echo "<pre>";
-//        var_dump($this->getProductInRule()); die();
-
-//        var_dump($this->getRules()->getData()); die();
-//        echo "<pre>";
-//        print_r($collection->getData());die();
-
-
-//        echo "<pre>";
-//        print_r($collection->getData());
-//        die();
-////        $categories = $observer->getData('menu');
-////        die();
-//        $writer = new \Laminas\Log\Writer\Stream(BP . '/var/log/custom.log');
-//        $logger = new \Laminas\Log\Logger();
-//        $logger->addWriter($writer);
-//        $logger->info('Hello Quang Chien');
     }
 }

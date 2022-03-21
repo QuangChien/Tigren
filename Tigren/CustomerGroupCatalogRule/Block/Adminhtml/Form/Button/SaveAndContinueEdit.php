@@ -10,7 +10,7 @@ namespace Tigren\CustomerGroupCatalogRule\Block\Adminhtml\Form\Button;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 use Magento\Ui\Component\Control\Container;
 
-class Save extends Generic implements ButtonProviderInterface
+class SaveAndContinueEdit extends Generic implements ButtonProviderInterface
 {
     /**
      * @return array
@@ -18,23 +18,14 @@ class Save extends Generic implements ButtonProviderInterface
     public function getButtonData()
     {
         return [
-            'label' => __('Save'),
-            'class' => 'save primary',
+            'label' => __('Save and Continue Edit'),
+            'class' => 'save',
             'data_attribute' => [
                 'mage-init' => [
-                    'buttonAdapter' => [
-                        'actions' => [
-                            [
-                                'targetName' => 'your_form_ui_component_name.your_form_ui_component_name',
-                                'actionName' => 'save',
-                                'params' => [
-                                    false,
-                                ],
-                            ],
-                        ],
-                    ],
+                    'button' => ['event' => 'saveAndContinueEdit'],
                 ],
             ],
+            'sort_order' => 80,
         ];
     }
 
