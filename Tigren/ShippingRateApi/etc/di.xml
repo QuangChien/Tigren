@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Tigren\ShippingRateApi\Api\ShippingRateRepositoryInterface" type="Tigren\ShippingRateApi\Model\ShippingRateRepository"/>
+    <preference for="Tigren\ShippingRateApi\Api\Data\ShippingRateInterface" type="Tigren\ShippingRateApi\Model\ShippingRate"/>
+    <preference for="Tigren\ShippingRateApi\Api\Data\SuccessGetRateInterface" type="Tigren\ShippingRateApi\Model\SuccessGetRate"/>
+    <preference for="Tigren\ShippingRateApi\Api\Data\ErrorGetRateInterface" type="Tigren\ShippingRateApi\Model\ErrorGetRate"/>
+</config>

@@ -1,0 +1,20 @@
+<!--
+  ~ @author  Tigren Solutions <info@tigren.com>
+  ~ @copyright Copyright (c) 2022 Tigren Solutions <https://www.tigren.com>. All rights reserved.
+  ~ @license  Open Software License (“OSL”) v. 3.0
+  -->
+
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget_file.xsd">
+    <widget id="products_list">
+        <parameters>
+            <parameter name="template" xsi:type="select">
+                <options>
+                    <option name="option_id" value="Tigren_CustomCheckout::view/custom-template.phtml">
+                        <label translate="true">Custom template</label>
+                    </option>
+                </options>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

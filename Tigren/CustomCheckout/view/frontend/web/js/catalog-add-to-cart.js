@@ -10,7 +10,7 @@ define([
     'Magento_Catalog/js/product/view/product-ids-resolver',
     'Magento_Catalog/js/product/view/product-info-resolver',
     'jquery-ui-modules/widget'
-], function ($, $t, _, idsResolver, productInfoResolver) {
+], function ($, $t, _, idsResolver, productInfoResolver,customerData) {
     'use strict';
 
     $.widget('mage.catalogAddToCart', {
@@ -79,12 +79,134 @@ define([
         },
 
         /**
+         * get base url
+         * @returns {string}
+         */
+        getBaseUrl: function () {
+            return window.location.origin
+        },
+
+        /**
+         * delte Quote Item
+         */
+        deleteQuoteItem: function () {
+            const self = this;
+            const urlDelete = self.getBaseUrl() + '/custom_checkout/quote/deletequoteitem';
+            $.ajax({
+                url: urlDelete,
+                type: 'DELETE',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.success) {
+                        window.location.reload()
+                    }
+                },
+            });
+        },
+
+        /**
+         * popup
+         */
+        popupModal: function () {
+            const self = this;
+            $('<div />').html('The product you add is a single purchase product or your cart has a single purchase product!\n' +
+                'Please delete all orders or go to checkout page.')
+                .modal({
+                    title: 'Notice!',
+                    autoOpen: true,
+                    closed: function () {
+                        // on close
+                    },
+                    buttons: [
+                        {
+                            text: 'Clear Cart',
+                            click: function () {
+                                self.deleteQuoteItem();
+                            }
+                        },
+                        {
+                            text: 'Go to Checkout',
+                            click: function () {
+                                window.location = window.checkout.checkoutUrl
+                            }
+                        }
+                    ]
+                });
+        },
+
+        /**
+         * get Quote Item Total
+         * @param {jQuery} form
+         */
+        getQuoteItemTotal: function (form) {
+            const self = this;
+            const urlQuote = self.getBaseUrl() + '/custom_checkout/quote/getquoteitem';
+            $.ajax({
+                url: urlQuote,
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.data > 0) {
+                        const productId = form.attr('simple-product-id');
+                        if (Object.values(result.productIds).includes(productId) && result.productIds.length < 2) {
+                            self.ajaxSubmit(form);
+                        } else {
+                            self.popupModal();
+                        }
+                    } else {
+                        self.ajaxSubmit(form);
+                    }
+                },
+            });
+        },
+
+        /**
+         *
+         * @param {jQuery} form
+         */
+        checkMultipleOrderInQuote: function (form) {
+            const self = this;
+            const url = self.getBaseUrl() + '/custom_checkout/quote/getmultipleorderofquoteitem'
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.data.indexOf('0') >= 0) {
+                        self.popupModal();
+                    } else {
+                        self.ajaxSubmit(form);
+                    }
+                },
+            });
+        },
+
+        /**
          * Handler for the form 'submit' event
          *
          * @param {jQuery} form
          */
         submitForm: function (form) {
-            this.ajaxSubmit(form);
+            // this.disableAddToCartButton(form);
+            const self = this;
+            const productId = form.attr('simple-product-id');
+            const url = self.getBaseUrl() + '/rest/all/V1/tigren/product/';
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    prdId: productId
+                },
+                success: function (result) {
+                    const data = JSON.parse(result)
+                    if (data.multiple_order === '0') {
+                        self.getQuoteItemTotal(form);
+                    } else {
+                        self.checkMultipleOrderInQuote(form);
+                    }
+                },
+            });
         },
 
         /**
@@ -170,6 +292,7 @@ define([
                             .html(res.product.statusText);
                     }
                     self.enableAddToCartButton(form);
+
                 },
 
                 /** @inheritdoc */

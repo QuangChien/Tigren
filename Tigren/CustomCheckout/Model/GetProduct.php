@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * @author  Tigren Solutions <info@tigren.com>
  * @copyright Copyright (c) 2022 Tigren Solutions <https://www.tigren.com>. All rights reserved.
  * @license  Open Software License (“OSL”) v. 3.0
@@ -11,7 +11,7 @@ namespace Tigren\CustomCheckout\Model;
  * Class CustomManagement
  * @package ViMagento\CustomApi\Model
  */
-class CustomManagement implements \Tigren\CustomCheckout\Api\GetProductInterface
+class GetProduct implements \Tigren\CustomCheckout\Api\GetProductInterface
 {
     protected $request;
     protected $_productRepository;
@@ -41,7 +41,6 @@ class CustomManagement implements \Tigren\CustomCheckout\Api\GetProductInterface
         return $this->_productRepository->getById($this->getProductId());
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -49,12 +48,12 @@ class CustomManagement implements \Tigren\CustomCheckout\Api\GetProductInterface
     {
         try{
             $multipleOrder = [
-                'multiple_order' => $this->getProductById()->getData('multiple_order')
+                'multiple_order' => $this->getProductById()->getData('multiple_order'
+                )
             ];
         } catch (\Exception $e) {
             $multipleOrder=['error' => $e->getMessage()];
         }
         return json_encode($multipleOrder);
-
     }
 }

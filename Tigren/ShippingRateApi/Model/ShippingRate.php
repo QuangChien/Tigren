@@ -1,25 +1,30 @@
 <?php
 /**
- * ShippingRate
- *
- * @copyright Copyright © 2022 Staempfli AG. All rights reserved.
- * @author    juan.alonso@staempfli.com
+ * @author  Tigren Solutions <info@tigren.com>
+ * @copyright Copyright (c) 2022 Tigren Solutions <https://www.tigren.com>. All rights reserved.
+ * @license  Open Software License (“OSL”) v. 3.0
  */
 
 namespace Tigren\ShippingRateApi\Model;
 
 
 use Tigren\ShippingRateApi\Api\Data\ShippingRateInterface;
+use Magento\Framework\Model\AbstractModel;
 
-class ShippingRate implements \Tigren\ShippingRateApi\Api\Data\ShippingRateInterface
+class ShippingRate extends AbstractModel implements ShippingRateInterface
 {
+
+    protected function _construct()
+    {
+        $this->_init(\Magento\Catalog\Model\ResourceModel\Product::class);
+    }
 
     /**
      * @inheritDoc
      */
     public function getSku()
     {
-        // TODO: Implement getSku() method.
+        return $this->_getData(ShippingRateInterface::SKU);
     }
 
     /**
@@ -27,7 +32,8 @@ class ShippingRate implements \Tigren\ShippingRateApi\Api\Data\ShippingRateInter
      */
     public function setSku($sku)
     {
-        // TODO: Implement setSku() method.
+        $this->setData(ShippingRateInterface::SKU, $sku);
+        return $this;
     }
 
     /**
@@ -35,7 +41,7 @@ class ShippingRate implements \Tigren\ShippingRateApi\Api\Data\ShippingRateInter
      */
     public function getQty()
     {
-        // TODO: Implement getQty() method.
+        return $this->_getData(ShippingRateInterface::QTY);
     }
 
     /**
@@ -43,6 +49,8 @@ class ShippingRate implements \Tigren\ShippingRateApi\Api\Data\ShippingRateInter
      */
     public function setQty($qty)
     {
-        // TODO: Implement setQty() method.
+        $this->setData(ShippingRateInterface::QTY, $qty);
+        return $this;
     }
+
 }

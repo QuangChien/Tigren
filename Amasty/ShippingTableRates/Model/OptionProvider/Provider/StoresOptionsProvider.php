@@ -1,0 +1,31 @@
+<?php
+declare(strict_types=1);
+
+namespace Amasty\ShippingTableRates\Model\OptionProvider\Provider;
+
+use Magento\Framework\Data\OptionSourceInterface;
+use Magento\Store\Model\System\Store;
+
+class StoresOptionsProvider implements OptionSourceInterface
+{
+    /**
+     * @var Store
+     */
+    private $store;
+
+    /**
+     * @param Store $store
+     */
+    public function __construct(Store $store)
+    {
+        $this->store = $store;
+    }
+
+    /**
+     * @return array
+     */
+    public function toOptionArray(): array
+    {
+        return $this->store->getStoreValuesForForm(false, true);
+    }
+}

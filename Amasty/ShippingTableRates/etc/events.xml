@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="amasty_shipping_table_rates_method_save_after">
+        <observer name="amasty_shipping_table_rates_event_for_duplicate" instance="Amasty\ShippingTableRates\Observer\Admin\Method\Save" />
+    </event>
+</config>

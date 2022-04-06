@@ -1,0 +1,85 @@
+<?php
+/*
+ * @author  Tigren Solutions <info@tigren.com>
+ * @copyright Copyright (c) 2022 Tigren Solutions <https://www.tigren.com>. All rights reserved.
+ * @license  Open Software License (“OSL”) v. 3.0
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
+/**
+ * Product view template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View
+ */
+?>
+<?php $_helper = $this->helper(Magento\Catalog\Helper\Output::class); ?>
+<?php $_product = $block->getProduct(); ?>
+
+<div class="product-add-form">
+    <form simple-product-id ="" data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>"
+          action="<?= $block->escapeUrl($block->getSubmitUrl($_product)) ?>" method="post"
+          id="product_addtocart_form"<?php if ($_product->getOptions()) :?> enctype="multipart/form-data"<?php endif; ?>>
+        <input type="hidden" name="product" value="<?= (int)$_product->getId() ?>" />
+        <input type="hidden" name="selected_configurable_option" value="" />
+        <input type="hidden" name="related_product" id="related-products-field" value="" />
+        <input type="hidden" name="item"  value="<?= (int)$block->getRequest()->getParam('id') ?>" />
+        <?= $block->getBlockHtml('formkey') ?>
+        <?= $block->getChildHtml('form_top') ?>
+        <?php if (!$block->hasOptions()) :?>
+            <?= $block->getChildHtml('product_info_form_content') ?>
+        <?php else :?>
+            <?php if ($_product->isSaleable() && $block->getOptionsContainer() == 'container1') :?>
+                <?= $block->getChildChildHtml('options_container') ?>
+            <?php endif;?>
+        <?php endif; ?>
+
+        <?php if ($_product->isSaleable() && $block->hasOptions() && $block->getOptionsContainer() == 'container2') :?>
+            <?= $block->getChildChildHtml('options_container') ?>
+        <?php endif;?>
+        <?= $block->getChildHtml('form_bottom') ?>
+    </form>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "[data-role=priceBox][data-price-box=product-id-<?= $block->escapeHtml($_product->getId()) ?>]": {
+            "priceBox": {
+                "priceConfig":  <?= /* @noEscape */ $block->getJsonConfig() ?>
+            }
+        }
+    }
+</script>
+
+<script>
+    requirejs(['jquery','underscore'], function(jQuery,_){
+        jQuery(window).load(function(){
+            jQuery(".product-options-wrapper div").click(function() {
+                selpro();
+            });
+        });
+        function selpro () {
+            var selected_options = {};
+            jQuery('div.swatch-attribute').each(function(k,v){
+                var attribute_id = jQuery(v).attr('data-attribute-id');
+                var option_selected = jQuery(v).attr('data-option-selected');
+                //console.log(attribute_id, option_selected);
+                if(!attribute_id || !option_selected){ return;}
+                selected_options[attribute_id] = option_selected;
+            });
+
+            var product_id_index = jQuery('[data-role=swatch-options]').data('mageSwatchRenderer').options.jsonConfig.index;
+            var found_ids = [];
+            jQuery.each(product_id_index, function(product_id,attributes){
+                var productIsSelected = function(attributes, selected_options){
+                    return _.isEqual(attributes, selected_options);
+                }
+                if(productIsSelected(attributes, selected_options)){
+                    found_ids.push(product_id);
+                }
+            });
+            jQuery('form').attr("simple-product-id",found_ids);
+        }
+    });
+</script>
+
